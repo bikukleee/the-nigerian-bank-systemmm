@@ -36,7 +36,7 @@ function exit() {
     localStorage.setItem('balance', balance);
 
     alert("Thank you for using our banking system. Have a great day!");
-    window.location.href = "index2.html";
+    window.location.href = "index.html";
 }
 
 function updateBalance() {
