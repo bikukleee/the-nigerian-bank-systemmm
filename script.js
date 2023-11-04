@@ -1,50 +1,52 @@
-// Check if the current page is the signup page or the banking page
-if (window.location.href.includes("signup.html")) {
-    // Code for the signup page
-    document.getElementById("signup-form").addEventListener("submit", function (event) {
-        event.preventDefault();
-        const name = document.getElementById("namesb").value;
-        const password = document.getElementById("password").value;
+document.getElementById("deposit").addEventListener("click", deposit);
+document.getElementById("withdraw").addEventListener("click", withdraw);
+document.getElementById("balanceCheck").addEventListener("click", checkBalance);
+document.getElementById("exit").addEventListener("click", exit);
 
-        if (password === "") {
-            alert("Please enter a valid password");
-        } else {
-            // Store user data in Local Storage
-            localStorage.setItem('namesb', name);
-            localStorage.setItem('password', password);
-            localStorage.setItem('balance', 0); // Set initial balance to 0 for each new user
-            alert(`Thank you for signing up, ${name}. Your new account is created and ready to use.`);
-            window.location.href = "banking.html";
-        }
-    });
-} else if (window.location.href.includes("banking.html")) {
-    // Code for the banking system page
-    const username = "username"; // Retrieve the username from the URL or other sources
+let username = "name"; // You need to set this based on the user's session
 
-    // Use the username to generate unique keys for this user's data
-    const userKey = username.toLowerCase();
+let balance = parseFloat(localStorage.getItem(username + '-balance')) || 0;
 
-    let balance = parseFloat(localStorage.getItem(`${userKey}-balance`)) || 0;
-
-    // Add event listeners for deposit, withdraw, check balance, and exit
-    document.getElementById("deposit").addEventListener("click", deposit);
-    document.getElementById("withdraw").addEventListener("click", withdraw);
-    document.getElementById("balanceCheck").addEventListener("click", checkBalance);
-    document.getElementById("exit").addEventListener("click", exit);
-
-    function deposit() {
-        // Deposit logic here
-    }
-
-    function withdraw() {
-        // Withdraw logic here
-    }
-
-    function checkBalance() {
-        // Check balance logic here
-    }
-
-    function exit() {
-        // Exit logic here
+function deposit() {
+    const amount = Number(prompt("Enter the deposit amount:"));
+    if (amount <= 0 || isNaN(amount)) {
+        alert("Please enter a valid amount.");
+    } else {
+        balance += amount;
+        updateBalance();
+        saveBalance();
     }
 }
+
+function withdraw() {
+    const amount = Number(prompt("Enter the withdrawal amount:"));
+    if (amount <= 0 || isNaN(amount)) {
+        alert("Please enter a valid amount.");
+    } else if (amount > balance) {
+        alert("Insufficient balance.");
+    } else {
+        balance -= amount;
+        updateBalance();
+        saveBalance();
+    }
+}
+
+function checkBalance() {
+    alert(`Current balance: $${balance}`);
+}
+
+function exit() {
+    localStorage.setItem(username + '-balance', balance);
+    alert("Thank you for using our banking system. Have a great day!");
+    window.location.href = "index.html";
+}
+
+function updateBalance() {
+    document.getElementById("balance").textContent = `Balance: $${balance}`;
+}
+
+function saveBalance() {
+    localStorage.setItem(username + '-balance', balance);
+}
+
+updateBalance();

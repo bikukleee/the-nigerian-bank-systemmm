@@ -6,19 +6,15 @@ document.getElementById("signup").addEventListener("submit", function (event) {
     if (password === "") {
         alert("Please enter a valid password");
     } else {
-        
-        if (localStorage.getItem('namesb') === name && localStorage.getItem('password') === password) {
-            alert("Welcome back, " + name);
-            window.location.href = "index2.html";
-        } else {
-            localStorage.setItem('namesb', name);
-            localStorage.setItem('password', password);
-            localStorage.setItem('balance', 0); 
-            alert(`thank you for signing up ${name}. Your new account is created and ready to use `);
+        // Clear the previous account's data if it exists
+        localStorage.removeItem(name);
+        localStorage.removeItem(name + '-balance');
 
-            window.location.href = "index2.html";
-        }
+        // Set the new account data
+        localStorage.setItem(name, password);
+        localStorage.setItem(name + '-balance', 0);
+
+        alert(`Thank you for signing up, ${name}. Your new account is created and ready to use.`);
+        window.location.href = "index2.html";
     }
 });
-
-
