@@ -20,3 +20,5 @@ document.getElementById("signup").addEventListener("submit", function (event) {
         }
     }
 });
+
+
